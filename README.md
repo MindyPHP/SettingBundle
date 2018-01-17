@@ -2,8 +2,8 @@
 
 [![Build Status](https://travis-ci.org/MindyPHP/SettingBundle.svg?branch=master)](https://travis-ci.org/MindyPHP/SettingBundle)
 [![codecov](https://codecov.io/gh/MindyPHP/SettingBundle/branch/master/graph/badge.svg)](https://codecov.io/gh/MindyPHP/SettingBundle)
-[![Latest Stable Version](https://poser.pugx.org/mindy/user-bundle/v/stable.svg)](https://packagist.org/packages/mindy/user-bundle)
-[![Total Downloads](https://poser.pugx.org/mindy/user-bundle/downloads.svg)](https://packagist.org/packages/mindy/user-bundle)
+[![Latest Stable Version](https://poser.pugx.org/mindy/setting-bundle/v/stable.svg)](https://packagist.org/packages/mindy/setting-bundle)
+[![Total Downloads](https://poser.pugx.org/mindy/setting-bundle/downloads.svg)](https://packagist.org/packages/mindy/setting-bundle)
 
 Resources
 ---------
