@@ -1,0 +1,14 @@
+{% extends "admin/base.html" %}
+
+{% block breadcrumbs %}
+    {% set breadcrumbs = [
+    ['name' => 'Настройки', 'url' => url('settings')],
+    ['name' => settings.getName()]
+    ] %}
+    {% parent %}
+{% endblock %}
+
+{% block content %}
+    <h1 class="b-heading">{{ settings.getName() }}</h1>
+    {{ form_render(form)|safe }}
+{% endblock %}

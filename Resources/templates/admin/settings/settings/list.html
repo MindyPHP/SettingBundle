@@ -1,0 +1,20 @@
+{% extends "admin/base.html" %}
+
+{% block breadcrumbs %}
+    {% set breadcrumbs = [
+    ['name' => 'Настройки']
+    ] %}
+    {% parent %}
+{% endblock %}
+
+{% block content %}
+    <h1 class="b-heading">Настройки</h1>
+    {% for key, item in settings %}
+        <div>
+            <a href="{{ url('settings_form', ['slug' => item.getSlug()]) }}">{{ item.getName() }}</a>
+            <div>
+                {{ item.getDescription() }}
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

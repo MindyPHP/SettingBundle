@@ -1,0 +1,27 @@
+parameters:
+    mindy.bundle.settings.file_path: '%kernel.project_dir%/config/parameters_user.yml'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    _instanceof:
+        Mindy\Template\Library\LibraryInterface:
+            public: true
+            tags: ['template.library']
+
+    Mindy\Bundle\SettingBundle\:
+        resource: '../../*'
+        exclude: '../../{Tests,Model,vendor}'
+
+    Mindy\Bundle\SettingBundle\Controller\:
+        resource: '../../Controller'
+        tags: ['controller.service_arguments']
+
+    Mindy\Bundle\SettingBundle\Settings\Settings:
+        public: true
+        arguments:
+            - '%mindy.bundle.settings.file_path%'
+            - '@Mindy\Bundle\SettingBundle\Settings\Registry'

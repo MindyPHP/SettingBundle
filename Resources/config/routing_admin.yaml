@@ -1,0 +1,11 @@
+settings:
+    path: ''
+    defaults:
+        _controller: SettingBundle:Admin\Settings:list
+
+settings_form:
+    path: /{slug}
+    defaults:
+        _controller: SettingBundle:Admin\Settings:settings
+    requirements:
+        slug: '[a-zA-Z0-9-\_]+'
