@@ -1,11 +1,11 @@
 settings:
     path: ''
     defaults:
-        _controller: SettingBundle:Admin\Settings:list
+        _controller: \Mindy\Bundle\SettingBundle\Controller\Admin\SettingsController::list
 
 settings_form:
     path: /{slug}
     defaults:
-        _controller: SettingBundle:Admin\Settings:settings
+        _controller: \Mindy\Bundle\SettingBundle\Controller\Admin\SettingsController::settings
     requirements:
         slug: '[a-zA-Z0-9-\_]+'

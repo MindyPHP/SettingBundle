@@ -19,12 +19,25 @@ class Registry
     protected $settings = [];
 
     /**
-     * @param string           $slug
-     * @param AbstractSettings $settings
+     * @param SettingsInterface|FormAwareSettingsInterface $settings
      */
-    public function add(string $slug, AbstractSettings $settings)
+    public function add(SettingsInterface $settings)
     {
-        $this->settings[$slug] = $settings;
+        $slug = (new \ReflectionClass($settings))->getShortName();
+
+        $this->settings[$this->toSnakeCase($slug)] = $settings;
+    }
+
+    /**
+     * @param string $slug
+     *
+     * @return string
+     */
+    protected function toSnakeCase(string $slug): string
+    {
+        $value = preg_replace('/(.)(?=[A-Z])/', '$1_', $slug);
+
+        return mb_strtolower($value, 'UTF-8');
     }
 
     /**
@@ -40,15 +53,15 @@ class Registry
     /**
      * @param string $slug
      *
-     * @return AbstractSettings
+     * @return SettingsInterface|FormAwareSettingsInterface
      */
-    public function get(string $slug): AbstractSettings
+    public function get(string $slug): SettingsInterface
     {
         return $this->settings[$slug];
     }
 
     /**
-     * @return AbstractSettings[]|array
+     * @return SettingsInterface[]|FormAwareSettingsInterface[]|array
      */
     public function all()
     {

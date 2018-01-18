@@ -17,5 +17,8 @@ services:
         resource: '../../Controller'
         tags: ['controller.service_arguments']
 
+    Mindy\Bundle\SettingBundle\Settings\Registry:
+        public: true
+
     Mindy\Bundle\SettingBundle\Settings\SettingsManager:
         public: true

@@ -29,20 +29,15 @@ class SettingsPass implements CompilerPassInterface
         if (false === $container->hasDefinition(Registry::class)) {
             return;
         }
+        $definition = $container->getDefinition(Registry::class);
 
         $container
             ->registerForAutoconfiguration(SettingsInterface::class)
             ->setPublic(true)
             ->addTag('settings');
 
-        $definition = $container->getDefinition(Registry::class);
         foreach ($container->findTaggedServiceIds('settings') as $id => $params) {
-            $config = current($params);
-
-            $definition->addMethodCall('add', [
-                $config['slug'],
-                new Reference($id),
-            ]);
+            $definition->addMethodCall('add', [new Reference($id)]);
         }
     }
 }

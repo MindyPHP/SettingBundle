@@ -9,9 +9,9 @@
 
 {% block content %}
     <h1 class="b-heading">Настройки</h1>
-    {% for key, item in settings %}
+    {% for slug, item in settings %}
         <div>
-            <a href="{{ url('settings_form', ['slug' => item.getSlug()]) }}">{{ item.getName() }}</a>
+            <a href="{{ url('settings_form', ['slug' => slug]) }}">{{ item.getName() }}</a>
             <div>
                 {{ item.getDescription() }}
             </div>

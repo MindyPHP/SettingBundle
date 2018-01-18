@@ -45,32 +45,33 @@ class SettingsController extends Controller
     }
 
     /**
-     * @param Request         $request
-     * @param SettingsManager $settings
-     * @param Registry        $registry
-     * @param string          $slug
+     * @param Request $request
+     * @param string  $slug
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function settings(Request $request, SettingsManager $settings, Registry $registry, string $slug)
+    public function settings(Request $request, string $slug)
     {
+        $registry = $this->get(Registry::class);
+        $settingsManager = $this->get(SettingsManager::class);
+
         if (false === $registry->has($slug)) {
             $this->createNotFoundException();
         }
 
-        /** @var AbstractSettings $settings */
+        /** @var AbstractSettings $settingsManager */
         $abstractSettings = $registry->get($slug);
         if (false === ($abstractSettings instanceof FormAwareSettingsInterface)) {
             $this->createNotFoundException();
         }
 
-        $form = $this->createForm($settings->getForm(), $settings->all(), [
+        $form = $this->createForm($abstractSettings->getForm(), $settingsManager->all(), [
             'method' => 'POST',
             'action' => $this->generateUrl('settings_form', ['slug' => $slug]),
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $settings->set($form->getData());
+            $settingsManager->set($form->getData());
 
             $this->addFlash('success', 'Настройки сохранены');
 
