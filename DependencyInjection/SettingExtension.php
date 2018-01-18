@@ -19,25 +19,20 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 class SettingExtension extends Extension
 {
     /**
-     * Loads a specific configuration.
-     *
-     * @param array            $configs   An array of configuration values
-     * @param ContainerBuilder $container A ContainerBuilder instance
-     *
-     * @throws \InvalidArgumentException When provided tag is not defined in this extension
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.yml');
+        $loader->load('services.yaml');
 
         $configPath = sprintf(
-            '%s/config/parameters_user.yml',
-            $container->getParameter('kernel.root_dir')
+            '%s/config/parameters_user.yaml',
+            $container->getParameter('kernel.project_dir')
         );
         if (is_file($configPath)) {
-            (new YamlFileLoader($container, new FileLocator(dirname($configPath))))
-                ->load('parameters_user.yml');
+            $userLoader = new YamlFileLoader($container, new FileLocator(dirname($configPath)));
+            $userLoader->load('parameters_user.yaml');
         }
     }
 }
