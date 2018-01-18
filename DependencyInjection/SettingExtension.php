@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Mindy\Bundle\SettingBundle\DependencyInjection;
 
+use Mindy\Bundle\SettingBundle\Settings\SettingsManager;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -26,13 +27,21 @@ class SettingExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yaml');
 
+        $configuration = $this->getConfiguration($configs, $container);
+        $config = $this->processConfiguration($configuration, $configs);
+
         $configPath = sprintf(
-            '%s/config/parameters_user.yaml',
-            $container->getParameter('kernel.project_dir')
+            "%s/%s",
+            $container->getParameter('kernel.project_dir'),
+            ltrim($config['path'], '/')
         );
+
+        $definition = $container->getDefinition(SettingsManager::class);
+        $definition->setArgument(0, $configPath);
+
         if (is_file($configPath)) {
             $userLoader = new YamlFileLoader($container, new FileLocator(dirname($configPath)));
-            $userLoader->load('parameters_user.yaml');
+            $userLoader->load(basename($configPath));
         }
     }
 }
