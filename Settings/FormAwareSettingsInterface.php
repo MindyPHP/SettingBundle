@@ -11,10 +11,20 @@ declare(strict_types=1);
 
 namespace Mindy\Bundle\SettingBundle\Settings;
 
-interface SettingsInterface
+interface FormAwareSettingsInterface extends SettingsInterface
 {
     /**
      * @return string
      */
-    public function getPrefix(): string;
+    public function getName(): string;
+
+    /**
+     * @return string
+     */
+    public function getDescription(): string;
+
+    /**
+     * @return string
+     */
+    public function getForm(): string;
 }

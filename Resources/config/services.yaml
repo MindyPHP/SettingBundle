@@ -9,9 +9,6 @@ services:
             public: true
             tags: ['template.library']
 
-        Mindy\Bundle\SettingBundle\Settings\SettingsManager:
-            public: true
-
     Mindy\Bundle\SettingBundle\:
         resource: '../../*'
         exclude: '../../{Tests,vendor}'
@@ -19,3 +16,6 @@ services:
     Mindy\Bundle\SettingBundle\Controller\:
         resource: '../../Controller'
         tags: ['controller.service_arguments']
+
+    Mindy\Bundle\SettingBundle\Settings\SettingsManager:
+        public: true

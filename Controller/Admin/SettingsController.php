@@ -13,41 +13,56 @@ namespace Mindy\Bundle\SettingBundle\Controller\Admin;
 
 use Mindy\Bundle\MindyBundle\Controller\Controller;
 use Mindy\Bundle\SettingBundle\Settings\AbstractSettings;
+use Mindy\Bundle\SettingBundle\Settings\FormAwareSettingsInterface;
 use Mindy\Bundle\SettingBundle\Settings\Registry;
 use Mindy\Bundle\SettingBundle\Settings\SettingsManager;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class SettingsController extends Controller
 {
+    protected function getFormAwareSettings(): array
+    {
+        $registry = $this->get(Registry::class);
+
+        $settings = [];
+        foreach ($registry->all() as $slug => $setting) {
+            if ($setting instanceof FormAwareSettingsInterface) {
+                $settings[$slug] = $setting;
+            }
+        }
+
+        return $settings;
+    }
+
     /**
-     * @param Registry $registry
-     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function list(Registry $registry)
+    public function list()
     {
         return $this->render('admin/settings/settings/list.html', [
-            'settings' => $registry->all(),
+            'settings' => $this->getFormAwareSettings(),
         ]);
     }
 
     /**
-     * @param Request  $request
+     * @param Request         $request
      * @param SettingsManager $settings
-     * @param Registry $registry
-     * @param string   $slug
+     * @param Registry        $registry
+     * @param string          $slug
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function settings(Request $request, SettingsManager $settings, Registry $registry, string $slug)
     {
         if (false === $registry->has($slug)) {
-            throw new NotFoundHttpException();
+            $this->createNotFoundException();
         }
 
         /** @var AbstractSettings $settings */
         $abstractSettings = $registry->get($slug);
+        if (false === ($abstractSettings instanceof FormAwareSettingsInterface)) {
+            $this->createNotFoundException();
+        }
 
         $form = $this->createForm($settings->getForm(), $settings->all(), [
             'method' => 'POST',
