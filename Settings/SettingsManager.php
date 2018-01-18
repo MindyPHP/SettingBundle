@@ -125,10 +125,11 @@ class SettingsManager
     /**
      * @param array  $parameters
      * @param string $prefix
+     * @param bool   $clearPrefix
      *
      * @return array
      */
-    protected function filter(array $parameters, string $prefix): array
+    protected function filter(array $parameters, string $prefix, bool $clearPrefix = false): array
     {
         $valid = [];
         foreach ($parameters as $key => $value) {
@@ -136,7 +137,11 @@ class SettingsManager
                 continue;
             }
 
-            $valid[$key] = $value;
+            if ($clearPrefix) {
+                $valid[str_replace($prefix.'.', '', $key)] = $value;
+            } else {
+                $valid[$key] = $value;
+            }
         }
 
         return $valid;
@@ -157,20 +162,11 @@ class SettingsManager
      */
     public function all(string $prefix = null): array
     {
-        $params = $this->parameters->all();
+        $params = $this->getParameterBag()->all();
         if (empty($prefix)) {
             return $params;
         }
 
-        $filtered = array_filter($params, function ($key) use ($prefix) {
-            return 0 === strpos($key, $prefix);
-        }, ARRAY_FILTER_USE_KEY);
-
-        $result = [];
-        foreach ($filtered as $key => $value) {
-            $result[str_replace($prefix.'.', '', $key)] = $value;
-        }
-
-        return $result;
+        return $this->filter($params, $prefix, true);
     }
 }

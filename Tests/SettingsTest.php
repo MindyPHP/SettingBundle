@@ -32,8 +32,8 @@ class SettingsTest extends TestCase
             ->getMock();
 
         $this->registry = new Registry();
-        $this->registry->add('foo', new FooSettings($settingsForm));
-        $this->registry->add('bar', new BarSettings($settingsForm));
+        $this->registry->add(new FooSettings($settingsForm));
+        $this->registry->add(new BarSettings($settingsForm));
 
         $parameters = [
             'unknown' => 'foobar',
@@ -69,6 +69,10 @@ class SettingsTest extends TestCase
             'foo.title' => 'World hello',
             'bar.secret' => '123',
         ], $settings->all());
+
+        $this->assertSame([
+            'secret' => '123',
+        ], $settings->all('bar'));
 
         $this->assertInstanceOf(ParameterBag::class, $settings->getParameterBag());
     }

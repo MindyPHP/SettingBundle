@@ -25,10 +25,19 @@ class RegistryTest extends TestCase
         $r = new Registry();
         $this->assertCount(0, $r->all());
         $r->add($settings);
-        $this->assertTrue($r->has('test'));
+        $this->assertTrue($r->has('foo_settings'));
         $this->assertFalse($r->has('foo'));
-        $this->assertInstanceOf(AbstractSettings::class, $r->get('test'));
+        $this->assertInstanceOf(AbstractSettings::class, $r->get('foo_settings'));
 
         $this->assertSame(FormType::class, $settings->getForm());
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testExceptionRegistry()
+    {
+        $r = new Registry();
+        $this->assertInstanceOf(AbstractSettings::class, $r->get('test'));
     }
 }

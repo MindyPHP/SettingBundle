@@ -57,6 +57,13 @@ class Registry
      */
     public function get(string $slug): SettingsInterface
     {
+        if (false === $this->has($slug)) {
+            throw new \RuntimeException(sprintf(
+                'Unknown settings: %s',
+                $slug
+            ));
+        }
+
         return $this->settings[$slug];
     }
 

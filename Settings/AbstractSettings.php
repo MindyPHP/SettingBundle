@@ -10,6 +10,7 @@ declare(strict_types=1);
  */
 
 namespace Mindy\Bundle\SettingBundle\Settings;
+
 use Symfony\Component\Form\FormTypeInterface;
 
 /**
@@ -23,9 +24,9 @@ abstract class AbstractSettings implements FormAwareSettingsInterface
     protected $form;
 
     /**
-     * @param FormTypeInterface $form
+     * @param mixed $form
      */
-    public function setForm(FormTypeInterface $form)
+    public function setForm($form)
     {
         $this->form = $form;
     }
@@ -35,6 +36,10 @@ abstract class AbstractSettings implements FormAwareSettingsInterface
      */
     public function getForm(): string
     {
+        if (is_string($this->form)) {
+            return $this->form;
+        }
+
         return get_class($this->form);
     }
 }
