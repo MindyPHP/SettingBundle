@@ -38,10 +38,5 @@ class SettingExtension extends Extension
 
         $definition = $container->getDefinition(SettingsManager::class);
         $definition->setArgument(0, $configPath);
-
-        if (is_file($configPath)) {
-            $userLoader = new YamlFileLoader($container, new FileLocator(dirname($configPath)));
-            $userLoader->load(basename($configPath));
-        }
     }
 }
