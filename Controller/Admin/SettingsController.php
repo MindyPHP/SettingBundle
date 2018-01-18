@@ -71,7 +71,13 @@ class SettingsController extends Controller
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $settingsManager->set($form->getData());
+            $valid = [];
+            foreach ($form->getData() as $key => $value) {
+                $valid[sprintf("%s.%s", $settings->getPrefix(), $key)] = $value;
+            }
+            if (false === $settingsManager->set($valid)) {
+                throw new \RuntimeException('Could not save settings');
+            }
 
             $this->addFlash('success', 'Настройки сохранены');
 
