@@ -60,12 +60,12 @@ class SettingsController extends Controller
         }
 
         /** @var AbstractSettings $settingsManager */
-        $abstractSettings = $registry->get($slug);
-        if (false === ($abstractSettings instanceof FormAwareSettingsInterface)) {
+        $settings = $registry->get($slug);
+        if (false === ($settings instanceof FormAwareSettingsInterface)) {
             $this->createNotFoundException();
         }
 
-        $form = $this->createForm($abstractSettings->getForm(), $settingsManager->all(), [
+        $form = $this->createForm($settings->getForm(), $settingsManager->all($settings->getPrefix()), [
             'method' => 'POST',
             'action' => $this->generateUrl('settings_form', ['slug' => $slug]),
         ]);
@@ -79,7 +79,7 @@ class SettingsController extends Controller
         }
 
         return $this->render('admin/settings/settings/form.html', [
-            'settings' => $abstractSettings,
+            'settings' => $settings,
             'form' => $form->createView(),
         ]);
     }

@@ -12,9 +12,15 @@ declare(strict_types=1);
 namespace Mindy\Bundle\SettingBundle\Tests;
 
 use Mindy\Bundle\SettingBundle\Settings\AbstractSettings;
+use Symfony\Component\Form\FormTypeInterface;
 
 class FooSettings extends AbstractSettings
 {
+    public function __construct(FormTypeInterface $form)
+    {
+        $this->setForm($form);
+    }
+
     /**
      * @return string
      */

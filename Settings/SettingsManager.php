@@ -151,10 +151,26 @@ class SettingsManager
     }
 
     /**
+     * @param string|null $prefix
+     *
      * @return array
      */
-    public function all(): array
+    public function all(string $prefix = null): array
     {
-        return $this->parameters->all();
+        $params = $this->parameters->all();
+        if (empty($prefix)) {
+            return $params;
+        }
+
+        $filtered = array_filter($params, function ($key) use ($prefix) {
+            return 0 === strpos($key, $prefix);
+        }, ARRAY_FILTER_USE_KEY);
+
+        $result = [];
+        foreach ($filtered as $key => $value) {
+            $result[str_replace($prefix.'.', '', $key)] = $value;
+        }
+
+        return $result;
     }
 }

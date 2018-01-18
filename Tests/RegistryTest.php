@@ -15,7 +15,6 @@ use Mindy\Bundle\SettingBundle\Settings\AbstractSettings;
 use Mindy\Bundle\SettingBundle\Settings\Registry;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\FormTypeInterface;
 
 class RegistryTest extends TestCase
 {
@@ -25,7 +24,7 @@ class RegistryTest extends TestCase
 
         $r = new Registry();
         $this->assertCount(0, $r->all());
-        $r->add('test', $settings);
+        $r->add($settings);
         $this->assertTrue($r->has('test'));
         $this->assertFalse($r->has('foo'));
         $this->assertInstanceOf(AbstractSettings::class, $r->get('test'));
