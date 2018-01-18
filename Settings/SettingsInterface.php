@@ -27,4 +27,9 @@ interface SettingsInterface
      * @return string
      */
     public function getForm(): string;
+
+    /**
+     * @return string
+     */
+    public function getPrefix(): string;
 }
